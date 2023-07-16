@@ -1,6 +1,6 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
-// Copyright (c) 2022 - present Mikael Sundell.
+// Copyright (c) 2023-present Mikael Sundell.
 //
 
 #include <iostream>
@@ -27,14 +27,6 @@
 #include <eigen3/Eigen/Dense>
 
 using namespace OIIO;
-
-// opencolorio
-#include <OpenColorIO/OpenColorIO.h>
-using namespace OpenColorIO_v2_2dev;
-
-// json
-#include <nlohmann/json.hpp>
-using json = nlohmann::json;
 
 // prints
 template <typename T>
@@ -64,13 +56,13 @@ struct IT8Tool
     bool help = false;
     bool verbose = false;
     std::vector<std::string> chartfiles;
-    std::string it8referencefile;
-    std::string it8outputfile;
-    std::string it8datafile;
-    std::string it8rawpatchfile;
-    std::string it8rawreferencefile;
-    std::string it8calibrationmatrixfile;
-    std::string it8calibrationlutfile;
+    std::string referencefile;
+    std::string outputfile;
+    std::string outputdatafile;
+    std::string outputrawpatchfile;
+    std::string outputrawreferencefile;
+    std::string outputcalibrationmatrixfile;
+    std::string outputcalibrationlutfile;
     float xoffset = 0.0f;
     float yoffset = 0.0f;
     float xscale = 0.8f;
@@ -103,7 +95,7 @@ static int
 set_it8referencefile(int argc, const char* argv[])
 {
     OIIO_DASSERT(argc == 2);
-    tool.it8referencefile = argv[1];
+    tool.referencefile = argv[1];
     return 0;
 }
 
@@ -538,47 +530,47 @@ main( int argc, const char * argv[])
       .help("Debug status messages");
     
     ap.separator("Input flags:");
-    ap.arg("--it8referencefile %s:IT8FILE", &tool.it8referencefile)
+    ap.arg("--referencefile %s:IT8FILE", &tool.referencefile)
       .help("Input it8 reference file");
     
-    ap.arg("--it8offset %s:IT8OFFSET")
-      .help("Input it8 offset (default: 0.0, 0.0)")
+    ap.arg("--offset %s:IT8OFFSET")
+      .help("Input it8 chart offset (default: 0.0, 0.0)")
       .action(set_it8offset);
     
     ap.arg("--it8scale %s:IT8SCALE")
-      .help("Input it8 scale (default: 0.8, 0.8)")
+      .help("Input it8 chart scale (default: 0.8, 0.8)")
       .action(set_it8scale);
     
-    ap.arg("--it8rotate90")
+    ap.arg("--rotate90")
       .help("Rotate it8 chart 90 degrees")
       .action(set_rotate90);
     
-    ap.arg("--it8rotate180")
+    ap.arg("--rotate180")
       .help("Rotate it8 chart 180 degrees")
       .action(set_rotate180);
     
-    ap.arg("--it8rotate270")
+    ap.arg("--rotate270")
       .help("Rotate it8 chart 270 degrees")
       .action(set_rotate270);
     
     ap.separator("Output flags:");
-    ap.arg("--it8outputfile %s:IT8FILE", &tool.it8outputfile)
+    ap.arg("--outputfile %s:FILE", &tool.outputfile)
       .help("Output it8 chart file");
     
-    ap.arg("--it8datafile %s:IT8FILE", &tool.it8datafile)
+    ap.arg("--outputdatafile %s:FILE", &tool.outputdatafile)
       .help("Output it8 data file");
     
-    ap.arg("--it8rawpatchfile %s:IT8FILE", &tool.it8rawpatchfile)
-      .help("Output it8 raw patch file");
+    ap.arg("--outputrawpatchfile %s:FILE", &tool.outputrawpatchfile)
+      .help("Output raw patch file");
     
-    ap.arg("--it8rawreferencefile %s:IT8FILE", &tool.it8rawreferencefile)
-      .help("Output it8 raw reference file");
+    ap.arg("--outputrawreferencefile %s:FILE", &tool.outputrawreferencefile)
+      .help("Output raw reference file");
     
-    ap.arg("--it8calibrationmatrixfile %s:IT8FILE", &tool.it8calibrationmatrixfile)
-      .help("Output it8 calibration matrix file");
+    ap.arg("--outputcalibrationmatrixfile %s:FILE", &tool.outputcalibrationmatrixfile)
+      .help("Output calibration matrix file");
     
-    ap.arg("--it8calibrationlutfile %s:IT8FILE", &tool.it8calibrationlutfile)
-      .help("Output it8 calibration lut file");
+    ap.arg("--outputcalibrationlutfile %s:FILE", &tool.outputcalibrationlutfile)
+      .help("Output calibration lut file");
 
     // clang-format on
     if (ap.parse_args(argc, (const char**)argv) < 0) {
@@ -598,7 +590,7 @@ main( int argc, const char * argv[])
         ap.abort();
         return EXIT_FAILURE;
     }
-    if (!tool.it8referencefile.size()) {
+    if (!tool.referencefile.size()) {
         std::cerr << "error: must have it8 reference file parameter\n";
         ap.briefusage();
         ap.abort();
@@ -614,9 +606,9 @@ main( int argc, const char * argv[])
     std::cout << "it8tool -- a set of utilities for processing it8 calibration charts" << std::endl;
 
     // it8 file
-    IT8File file = openFile(tool.it8referencefile);
+    IT8File file = openFile(tool.referencefile);
     if (file.valid) {
-        print_info("Reading IT8 reference file: ", tool.it8referencefile);
+        print_info("Reading IT8 reference file: ", tool.referencefile);
         if (tool.debug) {
             print_info("IT8 attributes: ", "raw");
             print_info("  originator: ", file.originator);
@@ -630,7 +622,7 @@ main( int argc, const char * argv[])
             print_info("  patches: ", file.data.size());
         }
     } else {
-        print_error("Failed when trying to read reference file, not an it8 file.", tool.it8referencefile);
+        print_error("Failed when trying to read reference file, not an it8 file.", tool.referencefile);
         return EXIT_FAILURE;
     }
     
@@ -1214,10 +1206,10 @@ main( int argc, const char * argv[])
             
             
             // datafile
-            if (tool.it8datafile.length())
+            if (tool.outputdatafile.length())
             {
-                print_info("Writing it8 data file: ", tool.it8datafile);
-                std::ofstream outputFile(tool.it8datafile);
+                print_info("Writing it8 data file: ", tool.outputdatafile);
+                std::ofstream outputFile(tool.outputdatafile);
                 if (outputFile.is_open()) {
                     outputFile << ", "
                                << "mrgb.x, mrgb.y, mrgb.z, md65.x, md65.y, md65.z, "
@@ -1258,15 +1250,15 @@ main( int argc, const char * argv[])
                                    << std::endl;
                     }
                 } else {
-                    print_error("could not open IT8 data file: ", tool.it8datafile);
+                    print_error("could not open output data file: ", tool.outputdatafile);
                 }
                 outputFile.close();
             }
             // raw patch file
-            if (tool.it8rawpatchfile.length())
+            if (tool.outputrawpatchfile.length())
             {
-                print_info("Writing it8 raw patch file: ", tool.it8rawpatchfile);
-                std::ofstream outputFile(tool.it8rawpatchfile);
+                print_info("Writing it8 raw patch file: ", tool.outputrawpatchfile);
+                std::ofstream outputFile(tool.outputrawpatchfile);
                 if (outputFile.is_open()) {
                     outputFile << ", x, y, z" << std::endl;
                     for (IT8Patch patch : dataset.data) {
@@ -1277,15 +1269,15 @@ main( int argc, const char * argv[])
                                    << std::endl;
                     }
                  } else {
-                     print_error("could not open IT8 raw patch file: ", tool.it8rawpatchfile);
+                     print_error("could not open output raw patch file: ", tool.outputrawpatchfile);
                  }
                  outputFile.close();
             }
             // raw reference file
-            if (tool.it8rawreferencefile.length())
+            if (tool.outputrawreferencefile.length())
             {
-                print_info("Writing it8 raw reference file: ", tool.it8rawreferencefile);
-                std::ofstream outputFile(tool.it8rawreferencefile);
+                print_info("Writing it8 raw reference file: ", tool.outputrawreferencefile);
+                std::ofstream outputFile(tool.outputrawreferencefile);
                 if (outputFile.is_open()) {
                     outputFile << ", x, y, z" << std::endl;
                     for (IT8Patch patch : dataset.data) {
@@ -1296,30 +1288,30 @@ main( int argc, const char * argv[])
                                    << std::endl;
                     }
                  } else {
-                     print_error("could not open IT8 raw reference file: ", tool.it8referencefile);
+                     print_error("could not open output raw reference file: ", tool.outputrawreferencefile);
                  }
                  outputFile.close();
             }
             
             // calibration matrix file
-            if (tool.it8calibrationmatrixfile.length())
+            if (tool.outputcalibrationmatrixfile.length())
             {
-                print_info("Writing it8 calibration matrix file: ", tool.it8calibrationmatrixfile);
-                std::ofstream outputFile(tool.it8calibrationmatrixfile);
+                print_info("Writing it8 calibration matrix file: ", tool.outputcalibrationmatrixfile);
+                std::ofstream outputFile(tool.outputcalibrationmatrixfile);
                 if (outputFile.is_open()) {
                     outputFile << ccmmatrix[0][0] << ", " << ccmmatrix[0][1] << ", " << ccmmatrix[0][2] << std::endl
                                << ccmmatrix[1][0] << ", " << ccmmatrix[1][1] << ", " << ccmmatrix[1][2] << std::endl
                                << ccmmatrix[2][0] << ", " << ccmmatrix[2][1] << ", " << ccmmatrix[2][2] << std::endl;
                     
                 } else {
-                    print_error("could not open IT8 calibration matrix file: ", tool.it8datafile);
+                    print_error("could not open output calibration matrix file: ", tool.it8datafile);
                 }
                 outputFile.close();
             }
             
-            if (tool.it8calibrationlutfile.length())
+            if (tool.outputcalibrationlutfile.length())
             {
-                print_info("Writing it8 calibration matrix lut: ", tool.it8calibrationlutfile);
+                print_info("Writing output calibration matrix lut: ", tool.outputcalibrationlutfile);
                 
                 int size = 32;
                 int nsize = size * size * size;
@@ -1339,7 +1331,7 @@ main( int argc, const char * argv[])
                     values.push_back(rgb.z);
                 }
 
-                std::ofstream outputFile(tool.it8calibrationlutfile);
+                std::ofstream outputFile(tool.outputcalibrationlutfile);
                 if (outputFile)
                 {
                     outputFile << "# IT8Tool Color Calibration LUT" << std::endl;
@@ -1361,15 +1353,15 @@ main( int argc, const char * argv[])
                     outputFile.close();
                     
                 } else {
-                    print_error("could not open IT8 calibration lut file: ", tool.it8datafile);
+                    print_error("could not open output calibration lut file: ", tool.outputcalibrationlutfile);
                 }
             }
 
-            if (tool.it8outputfile.size()) {
-                print_info("Writing it8 output file: ", tool.it8outputfile);
+            if (tool.outputfile.size()) {
+                print_info("Writing it8 output file: ", tool.outputfile);
                 
-                if (!imagebuf.write(tool.it8outputfile)) {
-                    print_error("could not write it8 output file", imagebuf.geterror());
+                if (!imagebuf.write(tool.outputfile)) {
+                    print_error("could not write output file", imagebuf.geterror());
                 }
             }
         }

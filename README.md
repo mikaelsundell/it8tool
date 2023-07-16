@@ -32,20 +32,39 @@ The `macdeploy.sh` script will deploy mac bundle to dmg including dependencies.
 ./macdeploy.sh -e <path>/logctool -d <path>/dependencies -p <path>/path to deploy
 ```
 
-Web Resources
+Dependencies
 -------------
 
-* GitHub page:        https://github.com/mikaelsundell/it8tool
-* Issues              https://github.com/mikaelsundell/it8tool/issues
+| Project     | Description |
+| ----------- | ----------- |
+| Imath       | [Imath project @ Github](https://github.com/AcademySoftwareFoundation/Imath)
+| OpenImageIO | [OpenImageIO project @ Github](https://github.com/OpenImageIO/oiio)
+| Eigen       | [Eigen @ Gitlab](https://gitlab.com/libeigen/eigen)
+| 3rdparty    | [3rdparty project containing all dependencies @ Github](https://github.com/mikaelsundell/3rdparty)
+
+
+Project
+-------------
+
+* GitHub page   
+https://github.com/mikaelsundell/it8tool
+* Issues   
+https://github.com/mikaelsundell/it8tool/issues
+
+
+Resources
+---------
+
+* Aces-dev Matrices    
+https://github.com/ampas/aces-dev/blob/master/transforms/ctl/README-MATRIX.md
 
 
 Copyright
 ---------
 
-* IT8 references      Monaco Acquisition Company
+* IT8 references   
+Monaco Acquisition Company
 
-
-References
----------
-
-* Aces-dev Matrices    https://github.com/ampas/aces-dev/blob/master/transforms/ctl/README-MATRIX.md
+* Roboto font   
+https://fonts.google.com/specimen/Roboto   
+Designed by Christian Robertson

@@ -1,4 +1,4 @@
-# Copyright 2022-present Contributors to the it8tool project.
+# Copyright 2023-present Contributors to the it8tool project.
 # SPDX-License-Identifier: BSD-3-Clause
 # https://github.com/mikaelsundell/logctool
 

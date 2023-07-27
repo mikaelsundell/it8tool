@@ -19,12 +19,14 @@
 #include <OpenImageIO/argparse.h>
 #include <OpenImageIO/filesystem.h>
 #include <OpenImageIO/sysutil.h>
-
 #include <OpenImageIO/imagebuf.h>
 #include <OpenImageIO/imagebufalgo.h>
 
 // eigen
 #include <eigen3/Eigen/Dense>
+
+// rawtoaces
+#include <rawtoaces/acesrender.h>
 
 using namespace OIIO;
 
@@ -349,6 +351,47 @@ ROI aspectRatioBy(ROI roi, float aspectRatio)
     return roi;
 }
 
+// utils - files
+std::string filenameByExtension(const std::string& filename, const std::string& extension) {
+    size_t pos = filename.rfind('.');
+    if (pos != std::string::npos) {
+        std::string basename = filename.substr(0, pos);
+        return basename + extension;
+    }
+    return filename;
+}
+
+// utils - rawtoaces
+std::string rawtoaces(const std::string& filename, int wbmethod, int matmethod, float headroom = 6.0f) {
+    
+    std::vector<const char*> settings;
+    settings.push_back("rawtoaces");
+    
+    // white balance method
+    settings.push_back("--wb-method");
+    settings.push_back(std::to_string(wbmethod).c_str());
+    
+    // IDT matrix method
+    settings.push_back("--mat-method");
+    settings.push_back(std::to_string(matmethod).c_str());
+    
+    // highlight headroom
+    settings.push_back("--headroom");
+    settings.push_back(std::to_string(headroom).c_str());
+    
+    AcesRender& render = AcesRender::getInstance();
+    putenv((char*)"TZ=UTC");
+
+    render.initialize(pathsFinder());
+    render.configureSettings(settings.size(), (char**)&settings[0]);
+
+    render.preprocessRaw(filename.c_str());
+    render.postprocessRaw();
+    render.outputACES();
+    
+    return filenameByExtension(filename, "_aces.exr");
+}
+
 // IT8 reference
 struct IT8Data
 {
@@ -494,6 +537,7 @@ struct IT8Dataset
     std::vector<IT8Patch> data;
 };
 
+
 // main
 int 
 main( int argc, const char * argv[])
@@ -505,7 +549,7 @@ main( int argc, const char * argv[])
     Filesystem::convert_native_arguments(argc, (const char**)argv);
     ArgParse ap;
 
-    ap.intro("it8tool -- a set of utilities for processing it8 calibration charts\n");
+    ap.intro("it8tool -- a set of utilities for computation of color correction matrices from it8 chart\n");
     ap.usage("it8tool [options] filename...")
       .add_help(false)
       .exit_on_error(true);
@@ -537,7 +581,7 @@ main( int argc, const char * argv[])
       .help("Input it8 chart offset (default: 0.0, 0.0)")
       .action(set_it8offset);
     
-    ap.arg("--it8scale %s:IT8SCALE")
+    ap.arg("--scale %s:IT8SCALE")
       .help("Input it8 chart scale (default: 0.8, 0.8)")
       .action(set_it8scale);
     
@@ -603,7 +647,7 @@ main( int argc, const char * argv[])
     }
     
     // it8 program
-    std::cout << "it8tool -- a set of utilities for processing it8 calibration charts" << std::endl;
+    std::cout << "it8tool -- a set of utilities for computation of color correction matrices from it8 chart." << std::endl;
 
     // it8 file
     IT8File file = openFile(tool.referencefile);
@@ -629,11 +673,17 @@ main( int argc, const char * argv[])
     // chart files
     for(std::string chartfile : tool.chartfiles)
     {
-        ImageBuf imagebuf = ImageBuf(chartfile);
+        print_info("Reading chart file: ", chartfile);
+        
+        // rawtoaces
+        std::string acesfile = rawtoaces(chartfile, 0, 1);
+        
+        // aces file
+        ImageBuf imagebuf = ImageBuf(acesfile);
         {
-            print_info("Reading chart file: ", chartfile);
+            print_info("Reading aces file: ", acesfile);
             if (!imagebuf.read(0, 0, TypeDesc::FLOAT)) {
-                std::cerr << "Could not open image: " << chartfile << std::endl;
+                std::cerr << "Could not open image: " << acesfile << std::endl;
                 return EXIT_FAILURE;
             }
             // it8 rotate
@@ -1304,7 +1354,7 @@ main( int argc, const char * argv[])
                                << ccmmatrix[2][0] << ", " << ccmmatrix[2][1] << ", " << ccmmatrix[2][2] << std::endl;
                     
                 } else {
-                    print_error("could not open output calibration matrix file: ", tool.it8datafile);
+                    print_error("could not open output calibration matrix file: ", tool.outputcalibrationmatrixfile);
                 }
                 outputFile.close();
             }

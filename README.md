@@ -18,7 +18,7 @@ The it8tool app can be built both from commandline or using optional Xcode `-GXc
 ```shell
 mkdir build
 cd build
-cmake .. -DCMAKE_INSTALL_PREFIX=<path> -DCMAKE_PREFIX_PATH=<path> -DCMAKE_CXX_FLAGS="-I<eigen3 include>" -DCMAKE_CXX_STANDARD=17 -GXcode
+cmake .. -DCMAKE_MODULE_PATH=<path>/it8tool/modules -DCMAKE_INSTALL_PREFIX=<path> -DCMAKE_PREFIX_PATH=<path> -DCMAKE_CXX_FLAGS="-I<eigen3 include>" -DCMAKE_CXX_STANDARD=17 -GXcode
 cmake --build . --config Release -j 8
 ```
 
@@ -33,9 +33,8 @@ cmake ..
 cmake .. -DCMAKE_INSTALL_PREFIX=<path>/3rdparty/build/macosx/arm64.debug -DCMAKE_INSTALL_PREFIX=<path>/3rdparty/build/macosx/arm64.debug -DCMAKE_CXX_FLAGS="-I<path>/3rdparty/build/macosx/arm64.debug/include/eigen3" -DBUILD_SHARED_LIBS=TRUE -DCMAKE_CXX_STANDARD=17 -GXcode
 ```
 
-
 Usage
---------
+-----
 
 Print i8tool help message with flag ```--help```.
 
@@ -87,7 +86,7 @@ The calibration matrix file ```--outputcalibrationmatrixfile``` contains the 3x3
 The calibration LUT file ```--outputcalibrationlutfile``` contains the 32x32 color calibration LUT for input and output colorspace as Aces2065-1 AP0 Linear with D65 white point.
 
 
-Example using ```canon_eos_5d_mark_iii_it8_71_1993_mont45_2021_03.cr2```
+Example chart ```./data/charts/canon_eos_5d_mark_iii_it8_71_1993_mont45_2021_03.cr2```
 --------
 
 ```shell
@@ -104,7 +103,6 @@ Example using ```canon_eos_5d_mark_iii_it8_71_1993_mont45_2021_03.cr2```
 --outputcalibrationmatrixfile mont45_2021_03_ccm.csv
 --outputcalibrationlutfile mont45_2021_03_ccm.lut
 ```
-
 
 Packaging
 ---------
@@ -128,7 +126,7 @@ Dependencies
 
 
 Project
--------------
+-------
 
 * GitHub page   
 https://github.com/mikaelsundell/it8tool

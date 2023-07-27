@@ -549,7 +549,7 @@ main( int argc, const char * argv[])
     Filesystem::convert_native_arguments(argc, (const char**)argv);
     ArgParse ap;
 
-    ap.intro("it8tool -- a set of utilities for computation of color correction matrices from it8 chart\n");
+    ap.intro("it8tool -- a set of utilities for computation of color correction matrices from it8 charts\n");
     ap.usage("it8tool [options] filename...")
       .add_help(false)
       .exit_on_error(true);
@@ -647,7 +647,7 @@ main( int argc, const char * argv[])
     }
     
     // it8 program
-    std::cout << "it8tool -- a set of utilities for computation of color correction matrices from it8 chart." << std::endl;
+    std::cout << "it8tool -- a set of utilities for computation of color correction matrices from it8 charts" << std::endl;
 
     // it8 file
     IT8File file = openFile(tool.referencefile);

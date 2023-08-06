@@ -1,6 +1,6 @@
 # Copyright 2023-present Contributors to the it8tool project.
 # SPDX-License-Identifier: BSD-3-Clause
-# https://github.com/mikaelsundell/logctool
+# https://github.com/mikaelsundell/it8tool
 
 cmake_minimum_required(VERSION 3.23)
 set( project_name "it8tool" )

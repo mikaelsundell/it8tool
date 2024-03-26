@@ -211,7 +211,7 @@ double radians_from_degrees(double degrees) {
 
 // utils - color spaces
 Imath::Vec3<float> multiply_from_matrix(const Imath::Vec3<float>& src, const Imath::Matrix33<float>& matrix) {
-    return src * matrix.transposed(); // multiply in imath row-order
+    return src * matrix.transposed(); // imath row-order from column-order convention
 }
 
 Imath::Vec3<float> ciexyzd65_from_aces2065_1(const Imath::Vec3<float>& src) {
@@ -707,13 +707,13 @@ main( int argc, const char * argv[])
             {
                 // read
                 if (!imagebuf.read(0, 0, TypeDesc::FLOAT)) {
-                    std::cerr << "Could not open image: " << tool.inputfile << std::endl;
+                    print_error("Could not open image: ", tool.inputfile);
                     return EXIT_FAILURE;
                 }
                 
                 // remove
                 if (remove_by_filename(swapfile)) {
-                    std::cerr << "Could not remove swap: " << swapfile << std::endl;
+                    print_error("Could not remove swap: ", swapfile);
                     return EXIT_FAILURE;
                 }
                 
@@ -1251,7 +1251,7 @@ main( int argc, const char * argv[])
 
                 auto transpose = calmeasures.transpose();
                 auto inverse = (transpose * calmeasures).inverse() * transpose;
-                Eigen::Matrix<float, 3, 3> matrix = (inverse * calreferences).transpose(); // store in column-order
+                Eigen::Matrix<float, 3, 3> matrix = (inverse * calreferences).transpose(); // eigen row-order to column-order convention
                 
                 Imath::Matrix33<float> ccmmatrix;
                 for (int row = 0; row < 3; ++row) {

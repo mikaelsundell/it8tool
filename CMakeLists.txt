@@ -11,8 +11,8 @@ project( "${project_name} project" )
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/modules" )
 
 # imath
-find_package( Imath REQUIRED )
-find_package( OIIO REQUIRED )
+find_package( Imath CONFIG REQUIRED )
+find_package( OpenImageIO CONFIG REQUIRED )
 find_package( Eigen REQUIRED )
 find_package( Rawtoaces REQUIRED )
 
@@ -28,13 +28,24 @@ add_executable( ${project_name} "it8tool.cpp" )
 set_property(TARGET ${project_name} PROPERTY CXX_STANDARD 17)
 
 include_directories (
-    ${IMATH_INCLUDE_DIRS}
-    ${OIIO_INCLUDE_DIRS}
     ${RAWTOACES_INCLUDE_DIR}
 )
 
 target_link_libraries( ${project_name}
-    ${IMATH_LIBRARIES}  
-    ${OIIO_LIBRARIES}
-    ${RAWTOACES_LIBRARIES}
+    PRIVATE
+        Imath::Imath
+        OpenImageIO::OpenImageIO
+        ${RAWTOACES_LIBRARIES}
+)
+
+install(TARGETS ${project_name}
+    RUNTIME DESTINATION bin
+)
+
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/fonts
+    DESTINATION bin
+)
+
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/resources
+    DESTINATION bin
 )

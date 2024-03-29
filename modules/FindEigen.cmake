@@ -27,10 +27,7 @@ find_package_handle_standard_args (Eigen
 )
 
 if (EIGEN_FOUND)
-    set (EIGEN_INCLUDE_DIRS ${EIGEN_INCLUDE_DIR})
-    message("Eigen package")
-    message("Include dirs: ${EIGEN_INCLUDE_DIR}")
-
+    set (EIGEN_INCLUDE_DIRS ${EIGEN_INCLUDE_DIR}/eigen3)
 else ()
     set (EIGEN_INCLUDE_DIR)
 endif ()

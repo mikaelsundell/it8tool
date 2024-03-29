@@ -42,10 +42,6 @@ if (RAWTOACES_FOUND)
         ${RAWTOACES_IDT_LIBRARY}
         ${RAWTOACES_UTIL_LIBRARY}
     )
-    message("Rawtoaces package")
-    message("Include dirs: ${RAWTOACES_INCLUDE_DIRS}")
-    message("Libraries: ${RAWTOACES_LIBRARIES}")
-
 else ()
     set (RAWTOACES_INCLUDE_DIRS)
     set (RAWTOACES_LIBRARIES)

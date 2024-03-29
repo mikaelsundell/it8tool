@@ -25,7 +25,7 @@
 #include <OpenImageIO/imagebufalgo.h>
 
 // eigen
-#include <eigen3/Eigen/Dense>
+#include <Eigen/Dense>
 
 // rawtoaces
 #include <rawtoaces/acesrender.h>

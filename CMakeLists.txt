@@ -28,6 +28,7 @@ add_executable( ${project_name} "it8tool.cpp" )
 set_property(TARGET ${project_name} PROPERTY CXX_STANDARD 17)
 
 include_directories (
+    ${EIGEN_INCLUDE_DIRS}
     ${RAWTOACES_INCLUDE_DIR}
 )
 

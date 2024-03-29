@@ -385,6 +385,11 @@ std::string path_by_executable() {
     return(std::filesystem::current_path().string());
 }
 
+std::string path_by_paths(const std::string& font)
+{
+    return path_by_executable() + "/fonts/" + font;
+}
+
 // utils - rawtoaces
 bool rawtoaces(const std::string& filename, const std::string& outputname, int wbmethod, int matmethod, float headroom = 6.0f) {
     
@@ -568,13 +573,6 @@ main( int argc, const char * argv[])
     // Helpful for debugging to make sure that any crashes dump a stack
     // trace.
     Sysutil::setup_crash_stacktrace("stdout");
-    
-    // paths
-    OIIO::attribute("font_searchpath",
-        path_by_executable() +
-        ":" +
-        path_by_executable() + "/.."
-    );
     
     // arguments
     Filesystem::convert_native_arguments(argc, (const char**)argv);
@@ -768,6 +766,9 @@ main( int argc, const char * argv[])
                 // color
                 float color[] = { 1.0, 1.0, 1.0, 0.5 };
                 
+                // font
+                std::string font = "Roboto.ttf";
+
                 // patches
                 {
                     ROI roi = chartroi;
@@ -977,7 +978,7 @@ main( int argc, const char * argv[])
                                     cproi.ybegin + cproi.height() / 2.0,
                                     patch.id,
                                     40,
-                                    "Roboto.ttf",
+                                    path_by_paths(font),
                                     color,
                                     ImageBufAlgo::TextAlignX::Center,
                                     ImageBufAlgo::TextAlignY::Center
@@ -1205,7 +1206,7 @@ main( int argc, const char * argv[])
                                     gproi.ybegin + gproi.height() / 2.0,
                                     patch.id,
                                     40,
-                                    "Roboto.ttf",
+                                    path_by_paths(font),
                                     color,
                                     ImageBufAlgo::TextAlignX::Center,
                                     ImageBufAlgo::TextAlignY::Center

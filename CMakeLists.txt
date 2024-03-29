@@ -27,11 +27,6 @@ configure_file(
 add_executable( ${project_name} "it8tool.cpp" )
 set_property(TARGET ${project_name} PROPERTY CXX_STANDARD 17)
 
-include_directories (
-    ${EIGEN_INCLUDE_DIRS}
-    ${RAWTOACES_INCLUDE_DIR}
-)
-
 target_link_libraries( ${project_name}
     PRIVATE
         Imath::Imath
@@ -39,14 +34,23 @@ target_link_libraries( ${project_name}
         ${RAWTOACES_LIBRARIES}
 )
 
+include_directories (
+    ${EIGEN_INCLUDE_DIRS}
+    ${RAWTOACES_INCLUDE_DIR}
+)
+
+add_custom_command(
+    TARGET ${project_name}
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/fonts
+        $<TARGET_FILE_DIR:${project_name}>/fonts
+)
+
 install(TARGETS ${project_name}
     RUNTIME DESTINATION bin
 )
 
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/fonts
-    DESTINATION bin
-)
-
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/resources
     DESTINATION bin
 )

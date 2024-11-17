@@ -17,12 +17,12 @@ find_path (RAWTOACES_INCLUDE_DIR NAMES rawtoaces/acesrender.h
            HINTS ${RAWTOACES_ROOT}
 )
 
-find_library (RAWTOACES_IDT_LIBRARY NAMES rawtoaces_idt rawtoaces_idt.0.1.0
+find_library (RAWTOACES_IDT_LIBRARY NAMES rawtoaces_idt rawtoaces_idt.1.0.0
               PATH_SUFFIXES lib64 lib
               HINTS ${RAWTOACES_ROOT}
 )
 
-find_library (RAWTOACES_UTIL_LIBRARY NAMES rawtoaces_util rawtoaces_util.0.1.0
+find_library (RAWTOACES_UTIL_LIBRARY NAMES rawtoaces_util2 rawtoaces_util2.1.0.0
               PATH_SUFFIXES lib64 lib
               HINTS ${RAWTOACES_ROOT}
 )

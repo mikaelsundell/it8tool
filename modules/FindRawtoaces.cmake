@@ -13,7 +13,7 @@
 
 include (FindPackageHandleStandardArgs)
 
-find_path (RAWTOACES_INCLUDE_DIR NAMES rawtoaces/acesrender.h
+find_path (RAWTOACES_INCLUDE_DIR NAMES rawtoaces/rawtoaces_idt.h
            HINTS ${RAWTOACES_ROOT}
 )
 
@@ -22,7 +22,7 @@ find_library (RAWTOACES_IDT_LIBRARY NAMES rawtoaces_idt rawtoaces_idt.1.0.0
               HINTS ${RAWTOACES_ROOT}
 )
 
-find_library (RAWTOACES_UTIL_LIBRARY NAMES rawtoaces_util2 rawtoaces_util2.1.0.0
+find_library (RAWTOACES_UTIL_LIBRARY NAMES rawtoaces_util rawtoaces_util.1.0.0
               PATH_SUFFIXES lib64 lib
               HINTS ${RAWTOACES_ROOT}
 )

@@ -140,6 +140,8 @@ Resources
 * Aces-dev Matrices    
 https://github.com/ampas/aces-dev/blob/master/transforms/ctl/README-MATRIX.md
 
+* Monaco it8 reference files
+https://www.xrite.com/service-support/downloads/m/monaco-it8-reference-files
 
 Copyright
 ---------

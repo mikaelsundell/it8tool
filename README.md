@@ -1,7 +1,7 @@
 Readme for it8tool
 ==================
 
-[![License](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](https://github.com/mikaelsundell/logctool/blob/master/README.md)
+[![License](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](https://github.com/mikaelsundell/it8tool/blob/master/README.md)
 
 Introduction
 ------------
@@ -18,19 +18,17 @@ The it8tool app can be built both from commandline or using optional Xcode `-GXc
 ```shell
 mkdir build
 cd build
-cmake .. -DCMAKE_MODULE_PATH=<path>/it8tool/modules -DCMAKE_INSTALL_PREFIX=<path> -DCMAKE_PREFIX_PATH=<path> -DCMAKE_CXX_FLAGS="-I<eigen3 include>" -DCMAKE_CXX_STANDARD=17 -GXcode
+cmake .. -DCMAKE_MODULE_PATH=<path>/brawtool/modules -DCMAKE_PREFIX_PATH=<path> -DCMAKE_CXX_STANDARD=17 -GXcode
 cmake --build . --config Release -j 8
 ```
 
-Rawtoaces uses an old version of eigen while eigen3 is installed with the eigen3 suffix in the include path, add to CMAKE_CXX_FLAGS if necessary.
-
-**Example using 3rdparty on arm64:**
+**Example using 3rdparty on arm64 with Xcode**
 
 ```shell
 mkdir build
 cd build
 cmake ..
-cmake .. -DCMAKE_INSTALL_PREFIX=<path>/3rdparty/build/macosx/arm64.debug -DCMAKE_INSTALL_PREFIX=<path>/3rdparty/build/macosx/arm64.debug -DCMAKE_CXX_FLAGS="-I<path>/3rdparty/build/macosx/arm64.debug/include/eigen3" -DBUILD_SHARED_LIBS=TRUE -DCMAKE_CXX_STANDARD=17 -GXcode
+cmake .. -DCMAKE_PREFIX_PATH=<path>/3rdparty/build/macosx/arm64.debug -DCMAKE_CXX_FLAGS="-I<path>/3rdparty/build/macosx/arm64.debug/include/eigen3" -DCMAKE_CXX_STANDARD=17 -GXcode
 ```
 
 Usage
@@ -104,14 +102,12 @@ Example chart ```./data/charts/canon_eos_5d_mark_iii_it8_71_1993_mont45_2021_03.
 --outputcalibrationlutfile mont45_2021_03_ccm.lut
 ```
 
-Packaging
+Download
 ---------
 
-The `macdeploy.sh` script will deploy mac bundle to dmg including dependencies.
+Brawtool is included as part of pipeline tools. You can download it from the releases page:
 
-```shell
-./macdeploy.sh -e <path>/it8tool -d <path> -p <path>
-```
+* https://github.com/mikaelsundell/pipeline/releases
 
 Dependencies
 -------------

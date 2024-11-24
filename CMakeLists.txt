@@ -2,32 +2,32 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # https://github.com/mikaelsundell/it8tool
 
-cmake_minimum_required(VERSION 3.23)
-set( project_name "it8tool" )
+cmake_minimum_required (VERSION 3.23)
+set (project_name "it8tool")
 
-project( "${project_name} project" )
+project ("${project_name} project")
 
 # modules
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/modules" )
+set (CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/modules")
 
 # imath
-find_package( Imath CONFIG REQUIRED )
-find_package( OpenImageIO CONFIG REQUIRED )
-find_package( Eigen REQUIRED )
-find_package( Rawtoaces REQUIRED )
+find_package (Imath CONFIG REQUIRED)
+find_package (OpenImageIO CONFIG REQUIRED)
+find_package (Eigen REQUIRED)
+find_package (Rawtoaces REQUIRED)
 
 # font
-configure_file( 
+configure_file ( 
     "${PROJECT_SOURCE_DIR}/fonts/Roboto.ttf" 
     "${CMAKE_BINARY_DIR}/Roboto.ttf"
     COPYONLY
 )
 
 # package
-add_executable( ${project_name} "it8tool.cpp" )
-set_property(TARGET ${project_name} PROPERTY CXX_STANDARD 17)
+add_executable (${project_name} "it8tool.cpp")
+set_property (TARGET ${project_name} PROPERTY CXX_STANDARD 17)
 
-target_link_libraries( ${project_name}
+target_link_libraries (${project_name}
     PRIVATE
         Imath::Imath
         OpenImageIO::OpenImageIO
@@ -39,7 +39,7 @@ include_directories (
     ${RAWTOACES_INCLUDE_DIR}
 )
 
-add_custom_command(
+add_custom_command (
     TARGET ${project_name}
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
@@ -47,10 +47,10 @@ add_custom_command(
         $<TARGET_FILE_DIR:${project_name}>/fonts
 )
 
-install(TARGETS ${project_name}
+install (TARGETS ${project_name}
     RUNTIME DESTINATION bin
 )
 
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/fonts
+install (DIRECTORY ${CMAKE_SOURCE_DIR}/fonts
     DESTINATION bin
 )

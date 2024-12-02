@@ -6,7 +6,7 @@ Readme for it8tool
 Introduction
 ------------
 
-it8tool is a set of utilities for computation of color correction matrices from it8 charts
+It8tool is a set of utilities for computation of color correction matrices from it8 charts.
 
 ![Sample image or figure.](images/image.png 'it8tool')
 

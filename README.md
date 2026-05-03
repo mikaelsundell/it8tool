@@ -1,4 +1,4 @@
-Readme for it8tool
+it8tool
 ==================
 
 [![License](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](https://github.com/mikaelsundell/it8tool/blob/master/README.md)

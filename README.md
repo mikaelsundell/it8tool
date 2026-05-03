@@ -10,6 +10,12 @@ It8tool is a set of utilities for computation of color correction matrices from 
 
 ![Sample image or figure.](images/image.png 'it8tool')
 
+Change log:
+
+| Date       | Description                             |
+|------------|-----------------------------------------|
+| 2023-06-28 | Initial import |
+
 Building
 --------
 
@@ -139,12 +145,43 @@ https://github.com/ampas/aces-dev/blob/master/transforms/ctl/README-MATRIX.md
 * Monaco it8 reference files
 https://www.xrite.com/service-support/downloads/m/monaco-it8-reference-files
 
-Copyright
----------
+## License
 
-* IT8 references   
-Monaco Acquisition Company and X-Rite, Incorporated.
+### Code
+This project’s source code is licensed under the BSD 3-Clause License.
 
-* Roboto font   
-https://fonts.google.com/specimen/Roboto   
-Designed by Christian Robertson
+### Third-Party Dependencies
+
+- **Imath**  
+  © Academy Software Foundation  
+  Licensed under the BSD 3-Clause License  
+  https://github.com/AcademySoftwareFoundation/Imath
+
+- **OpenImageIO**  
+  © Contributors to the OpenImageIO project  
+  Licensed under the BSD 3-Clause License  
+  https://github.com/OpenImageIO/oiio
+
+- **Eigen**  
+  © Eigen contributors  
+  Licensed under the Mozilla Public License 2.0 (MPL2)  
+  https://eigen.tuxfamily.org/
+
+- **RawtoACES**  
+  © Academy Software Foundation  
+  Licensed under the Apache License 2.0  
+  https://github.com/AcademySoftwareFoundation/rawtoaces
+
+### Data & Resources
+
+- **IT8 Reference Data**  
+  © Monaco Acquisition Company and X-Rite, Incorporated  
+  Used for calibration and validation purposes.
+
+- **Roboto Font**  
+  © Google / Christian Robertson  
+  Licensed under the Apache License 2.0  
+  https://fonts.google.com/specimen/Roboto
+
+### Note
+Users are responsible for complying with the licenses of third-party libraries, datasets, and resources when using or distributing this software.
